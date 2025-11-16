@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { fetchRsvps, submitRsvp, type Rsvp } from '../services/rsvpService';
+import { fetchRsvps, submitRsvp, type Rsvp } from '../services/rsvpService.ts';
 
 export const RsvpSection: React.FC = () => {
   const [name, setName] = useState('');

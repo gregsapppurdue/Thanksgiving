@@ -1,4 +1,4 @@
-declare module "../services/rsvpService" {
+declare module "../services/rsvpService.js" {
   export interface RsvpData {
     name: string;
     email?: string;

@@ -1,4 +1,4 @@
-declare module "../data/menuItems" {
+declare module "../data/menuItems.js" {
   export interface MenuItem {
     id: string;
     name: string;

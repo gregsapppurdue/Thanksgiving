@@ -18,7 +18,7 @@ JSON parsing and validation
 Error handling and response formatting
 Helper functions to map frontend data structure to sheet columns
 3. Frontend Service Update
-Update src/services/rsvpService.js to:
+Update src/services/rsvpService.ts to:
 Replace in-memory storage with fetch calls to Google Apps Script web app URL
 Add environment variable or configuration for the API endpoint URL
 Update fetchRsvps() to call GET endpoint
@@ -56,7 +56,7 @@ google-apps-script/RSVP_API.gs - Google Apps Script code
 docs/GOOGLE_SHEETS_SETUP.md - Setup instructions
 .env.example - Example environment variables
 Modified Files:
-src/services/rsvpService.js - Update to use Google Sheets API
+src/services/rsvpService.ts - Update to use Google Sheets API
 README.md - Add backend setup instructions
 Notes
 The user will need to manually create the Google Sheet and deploy the Apps Script

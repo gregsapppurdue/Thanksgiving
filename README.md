@@ -71,9 +71,9 @@ Thanksgiving/
 │   │   ├── MenuSection.tsx  # Menu with hoverable items
 │   │   └── RsvpSection.tsx # RSVP form and list
 │   ├── data/
-│   │   └── menuItems.js     # Menu data
+│   │   └── menuItems.ts     # Menu data
 │   ├── services/
-│   │   └── rsvpService.js   # RSVP API service
+│   │   └── rsvpService.ts   # RSVP API service
 │   └── App.tsx              # Main app component
 ├── google-apps-script/
 │   └── RSVP_API.gs          # Google Apps Script API

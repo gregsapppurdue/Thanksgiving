@@ -37,7 +37,7 @@ export const MenuSection: React.FC = () => {
               aria-label={`${item.name}. Hover or focus to see history and ingredients.`}
             >
               {/* Photo */}
-              <div className="relative h-48 bg-gradient-to-br from-amber-100 to-amber-200 overflow-hidden">
+              <div className="relative h-48 bg-gradient-to-br from-amber-100 to-amber-200 overflow-hidden flex items-center justify-center">
                 <img
                   src={item.photo}
                   alt={item.name}
@@ -49,7 +49,7 @@ export const MenuSection: React.FC = () => {
                   }}
                 />
                 {hoveredItem === item.id && (
-                  <div className="absolute inset-0 bg-pumpkin/20 transition-opacity duration-300" />
+                  <div className="absolute inset-0 bg-pumpkin/20 transition-opacity duration-300 z-10" />
                 )}
               </div>
 

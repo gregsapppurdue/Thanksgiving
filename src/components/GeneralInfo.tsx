@@ -9,9 +9,18 @@ export const GeneralInfo: React.FC = () => {
           🦃
         </span>
       </h2>
-      <p className="text-sm md:text-base text-sage/90 mb-6">
-        We&apos;d be delighted to have you join us for a cozy Thanksgiving dinner filled with
-        comfort food, warm drinks, and even warmer company.
+      <div className="mb-6 rounded-lg overflow-hidden">
+        <img
+          src="/Images/Thanksgiving Main.png"
+          alt="Thanksgiving dinner table"
+          className="w-full h-auto object-cover"
+        />
+      </div>
+      <p className="text-sm md:text-base text-sage/90 mb-6 leading-relaxed">
+        Join Greg Sapp for a warm and authentic American Thanksgiving feast, thoughtfully prepared to share the flavors, traditions, and cultural meaning of this uniquely American holiday. This gathering is especially designed to welcome Purdue MBT students and international friends who may be experiencing Thanksgiving for the first time.
+      </p>
+      <p className="text-sm md:text-base text-sage/90 mb-6 leading-relaxed">
+        Together, we&apos;ll enjoy a curated selection of classic Thanksgiving dishes—each rooted in history and representing the spirit of gratitude, community, and harvest that defines the holiday. The evening will blend good food, great conversation, and genuine connection as we celebrate together across cultures.
       </p>
 
       <dl className="grid gap-4 md:grid-cols-2 text-sm md:text-base">

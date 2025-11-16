@@ -8,16 +8,23 @@ export const App: React.FC = () => {
     <div className="text-sage">
       <header className="bg-gradient-to-b from-pumpkin to-maple text-wheat shadow-lg">
         <div className="max-w-5xl mx-auto px-4 py-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <div>
-            <p className="uppercase tracking-[0.25em] text-xs md:text-sm text-wheat/80">
-              You&apos;re invited
-            </p>
-            <h1 className="mt-2 text-3xl md:text-4xl font-serif font-semibold tracking-tight">
-              Thanksgiving Dinner
-            </h1>
-            <p className="mt-1 text-sm md:text-base text-wheat/90">
-              A cozy evening of gratitude, good food, and great company.
-            </p>
+          <div className="flex items-center gap-4">
+            <img
+              src="/Images/SAPP Dinner Logo.png"
+              alt="Sapp Dinner Logo"
+              className="h-28 md:h-36 w-auto"
+            />
+            <div>
+              <p className="uppercase tracking-[0.25em] text-xs md:text-sm text-wheat/80">
+                You&apos;re invited
+              </p>
+              <h1 className="mt-2 text-3xl md:text-4xl font-serif font-semibold tracking-tight">
+                Thanksgiving Dinner
+              </h1>
+              <p className="mt-1 text-sm md:text-base text-wheat/90">
+                A cozy evening of gratitude, good food, and great company.
+              </p>
+            </div>
           </div>
           <nav className="flex gap-3 text-sm md:text-base">
             <a 

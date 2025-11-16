@@ -9,7 +9,7 @@ export const GeneralInfo: React.FC = () => {
           🦃
         </span>
       </h2>
-      <div className="mb-6 rounded-lg overflow-hidden">
+      <div className="mb-6 rounded-lg overflow-hidden max-w-2xl mx-auto">
         <img
           src="/Images/Thanksgiving Main.png"
           alt="Thanksgiving dinner table"
@@ -27,25 +27,29 @@ export const GeneralInfo: React.FC = () => {
         <div>
           <dt className="font-semibold text-sage">Date &amp; Time</dt>
           <dd className="text-sage/90">
-            Thursday, November 27 · Arrivals from 4:30 PM · Dinner at 5:30 PM
+            Thursday, November 27 · Arrive 4:00 PM · Dinner 5:00 PM (Sharp!)
           </dd>
         </div>
         <div>
           <dt className="font-semibold text-sage">Location</dt>
           <dd className="text-sage/90">
-            123 Harvest Lane
+            Greg Sapp Apartment
             <br />
-            Maple Grove, USA
+            400 N 9th St Rd Apt 404
+            <br />
+            Lafayette, IN 47904
           </dd>
         </div>
         <div>
           <dt className="font-semibold text-sage">Dress Code</dt>
-          <dd className="text-sage/90">Cozy casual &mdash; sweaters, flannels, and comfy shoes welcome.</dd>
+          <dd className="text-sage/90">
+            Warm, comfortable clothing is encouraged—think cozy fall layers suitable for a relaxed Thanksgiving gathering. Bonus points for wearing fall colors like deep reds, oranges, golds, or browns!
+          </dd>
         </div>
         <div>
           <dt className="font-semibold text-sage">Extras</dt>
           <dd className="text-sage/90">
-            Kids are welcome. Board games, stories, and stretchy pants encouraged.
+            Feel free to bring a favorite drink or a treat from your home country to share. It&apos;s optional—just a fun way to celebrate Thanksgiving while enjoying the diversity, flavors, and traditions of our MBT community.
           </dd>
         </div>
       </dl>

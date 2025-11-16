@@ -15,7 +15,7 @@ export const fetchRsvps = async () => {
 /**
  * Submit a new RSVP
  * In the future, this will make an API call: POST /api/rsvps
- * @param {Object} rsvpData - { name: string, email?: string, item: string }
+ * @param {Object} rsvpData - { name: string, email?: string, phone?: string, item: string, dietaryRestrictions?: string }
  */
 export const submitRsvp = async (rsvpData) => {
   // Validate required fields
@@ -28,7 +28,9 @@ export const submitRsvp = async (rsvpData) => {
     id: Date.now().toString(), // In production, this would come from the backend
     name: rsvpData.name.trim(),
     email: rsvpData.email?.trim() || '',
+    phone: rsvpData.phone?.trim() || '',
     item: rsvpData.item.trim(),
+    dietaryRestrictions: rsvpData.dietaryRestrictions?.trim() || '',
     submittedAt: new Date().toISOString(),
   };
 

@@ -5,14 +5,18 @@ interface Rsvp {
   id: string;
   name: string;
   email: string;
+  phone?: string;
   item: string;
+  dietaryRestrictions?: string;
   submittedAt: string;
 }
 
 export const RsvpSection: React.FC = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [item, setItem] = useState('');
+  const [dietaryRestrictions, setDietaryRestrictions] = useState('');
   const [rsvps, setRsvps] = useState<Rsvp[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
@@ -49,11 +53,13 @@ export const RsvpSection: React.FC = () => {
     setIsSubmitting(true);
 
     try {
-      await submitRsvp({ name, email, item });
+      await submitRsvp({ name, email, phone, item, dietaryRestrictions });
       setSuccess(true);
       setName('');
       setEmail('');
+      setPhone('');
       setItem('');
+      setDietaryRestrictions('');
       await loadRsvps(); // Refresh the list
       
       // Clear success message after 3 seconds
@@ -68,7 +74,7 @@ export const RsvpSection: React.FC = () => {
   return (
     <div className="bg-white/80 backdrop-blur rounded-2xl shadow-md border border-amber-100 p-6 md:p-8">
       <h2 className="text-2xl md:text-3xl font-serif font-semibold text-pumpkin mb-6 flex items-center gap-2">
-        <span>RSVP & Bring a Dish</span>
+        <span>RSVP and Bring a Drink</span>
         <span className="text-2xl" aria-hidden="true">
           ✉️
         </span>
@@ -110,6 +116,24 @@ export const RsvpSection: React.FC = () => {
         </div>
 
         <div>
+          <label htmlFor="phone" className="block text-sm font-semibold text-sage mb-1">
+            Phone Number (optional)
+          </label>
+          <input
+            type="tel"
+            id="phone"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            className="w-full px-4 py-2 border border-amber-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pumpkin focus:border-transparent text-sage"
+            placeholder="+1 (555) 123-4567"
+            disabled={isSubmitting}
+          />
+          <p className="text-xs text-sage/70 mt-1">
+            For WhatsApp group messages and event updates
+          </p>
+        </div>
+
+        <div>
           <label htmlFor="item" className="block text-sm font-semibold text-sage mb-1">
             What You&apos;re Bringing <span className="text-pumpkin">*</span>
           </label>
@@ -122,6 +146,21 @@ export const RsvpSection: React.FC = () => {
             placeholder="e.g., Apple Pie, Wine, Salad"
             required
             disabled={isSubmitting}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="dietaryRestrictions" className="block text-sm font-semibold text-sage mb-1">
+            Special Dietary Restrictions (optional)
+          </label>
+          <textarea
+            id="dietaryRestrictions"
+            value={dietaryRestrictions}
+            onChange={(e) => setDietaryRestrictions(e.target.value)}
+            className="w-full px-4 py-2 border border-amber-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pumpkin focus:border-transparent text-sage resize-y min-h-[80px]"
+            placeholder="e.g., Vegetarian, Gluten-free, Nut allergies, etc."
+            disabled={isSubmitting}
+            rows={3}
           />
         </div>
 
@@ -164,9 +203,14 @@ export const RsvpSection: React.FC = () => {
                 className="bg-amber-50 border border-amber-200 rounded-lg p-4 hover:shadow-md transition-shadow"
               >
                 <p className="font-semibold text-sage mb-1">{rsvp.name}</p>
-                <p className="text-sm text-sage/80">
+                <p className="text-sm text-sage/80 mb-1">
                   Bringing: <span className="font-medium text-pumpkin">{rsvp.item}</span>
                 </p>
+                {rsvp.dietaryRestrictions && (
+                  <p className="text-xs text-sage/70 italic mt-2 pt-2 border-t border-amber-200">
+                    Dietary: {rsvp.dietaryRestrictions}
+                  </p>
+                )}
               </div>
             ))}
           </div>

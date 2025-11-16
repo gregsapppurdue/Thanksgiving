@@ -4,6 +4,13 @@ import { menuItems } from '../data/menuItems';
 export const MenuSection: React.FC = () => {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
+  // Items that are NOT vegetarian
+  const nonVegetarianItems = ['roast-turkey', 'turkey-gravy', 'deviled-eggs'];
+  
+  const isVegetarian = (itemId: string) => {
+    return !nonVegetarianItems.includes(itemId);
+  };
+
   return (
     <div className="bg-white/80 backdrop-blur rounded-2xl shadow-md border border-amber-100 p-6 md:p-8">
       <h2 className="text-2xl md:text-3xl font-serif font-semibold text-pumpkin mb-6 flex items-center gap-2">
@@ -55,8 +62,17 @@ export const MenuSection: React.FC = () => {
 
               {/* Content */}
               <div className="p-4">
-                <h4 className="font-semibold text-sage text-lg mb-3">
-                  {item.name}
+                <h4 className="font-semibold text-sage text-lg mb-3 flex items-center gap-2">
+                  <span>{item.name}</span>
+                  {isVegetarian(item.id) && (
+                    <span 
+                      className="text-green-600 text-base" 
+                      title="Vegetarian-friendly"
+                      aria-label="Vegetarian-friendly"
+                    >
+                      🌿
+                    </span>
+                  )}
                 </h4>
 
                 {hoveredItem === item.id && (

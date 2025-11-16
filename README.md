@@ -97,7 +97,14 @@ The app can be deployed to Google Cloud Run for serverless hosting. See the comp
 
 📖 **[Cloud Run Deployment Guide](./docs/CLOUD_RUN_DEPLOYMENT.md)**
 
-Quick deployment:
+**Quick deployment (no Docker required):**
+```bash
+# Deploy using Cloud Build (builds in the cloud)
+gcloud builds submit --config cloudbuild.yaml \
+  --substitutions=_SERVICE_NAME=thanksgiving-app,_REGION=us-central1,_VITE_RSVP_API_URL="YOUR_GOOGLE_APPS_SCRIPT_URL"
+```
+
+**Alternative: Automated scripts (requires Docker):**
 ```bash
 # Windows (PowerShell)
 .\scripts\deploy.ps1 -ProjectId "your-project-id" -Region "us-central1" -ServiceName "thanksgiving-app" -RsvpApiUrl "YOUR_GOOGLE_APPS_SCRIPT_URL"
@@ -105,6 +112,8 @@ Quick deployment:
 # Linux/Mac
 ./scripts/deploy.sh your-project-id us-central1 thanksgiving-app "YOUR_GOOGLE_APPS_SCRIPT_URL"
 ```
+
+**Setting up automatic deployments?** See [Cloud Build Trigger Setup](./docs/CLOUD_BUILD_TRIGGER_SETUP.md)
 
 ## Environment Variables
 

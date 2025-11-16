@@ -32,6 +32,8 @@ export const RsvpSection: React.FC = () => {
       setRsvps(data);
     } catch (err) {
       console.error('Failed to load RSVPs:', err);
+      // Don't show error to user on initial load - just log it
+      // The error will be shown if user tries to submit
     }
   };
 

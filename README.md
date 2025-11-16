@@ -91,6 +91,21 @@ npm run build
 
 The built files will be in the `dist/` directory.
 
+## Deployment to Google Cloud Run
+
+The app can be deployed to Google Cloud Run for serverless hosting. See the comprehensive deployment guide:
+
+📖 **[Cloud Run Deployment Guide](./docs/CLOUD_RUN_DEPLOYMENT.md)**
+
+Quick deployment:
+```bash
+# Windows (PowerShell)
+.\scripts\deploy.ps1 -ProjectId "your-project-id" -Region "us-central1" -ServiceName "thanksgiving-app" -RsvpApiUrl "YOUR_GOOGLE_APPS_SCRIPT_URL"
+
+# Linux/Mac
+./scripts/deploy.sh your-project-id us-central1 thanksgiving-app "YOUR_GOOGLE_APPS_SCRIPT_URL"
+```
+
 ## Environment Variables
 
 - `VITE_RSVP_API_URL`: The Google Apps Script Web App URL for the RSVP API

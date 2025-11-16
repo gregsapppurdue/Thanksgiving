@@ -1,0 +1,47 @@
+# Dependencies
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build output
+dist
+dist-ssr
+*.local
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Documentation (optional, can include if needed)
+# docs
+# README.md
+
+# Test files (if any)
+coverage
+.nyc_output
+
+# Deployment files (don't need in image)
+cloudbuild.yaml
+scripts
+*.md
+!README.md
+

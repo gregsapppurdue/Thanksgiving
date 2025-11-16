@@ -1,6 +1,24 @@
 // Service for RSVP management using Google Sheets backend
 // The API endpoint URL should be set in environment variables
 
+export interface RsvpData {
+  name: string;
+  email?: string;
+  phone?: string;
+  item: string;
+  dietaryRestrictions?: string;
+}
+
+export interface Rsvp {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  item: string;
+  dietaryRestrictions?: string;
+  submittedAt: string;
+}
+
 // Get API endpoint from environment variable or use a default
 const API_ENDPOINT = import.meta.env.VITE_RSVP_API_URL || '';
 
@@ -13,7 +31,7 @@ if (import.meta.env.DEV) {
  * Fetch all RSVPs from Google Sheets API
  * @returns {Promise<Array>} Array of RSVP objects
  */
-export const fetchRsvps = async () => {
+export const fetchRsvps = async (): Promise<Rsvp[]> => {
   if (!API_ENDPOINT) {
     console.warn('RSVP API endpoint not configured. Using fallback in-memory storage.');
     console.warn('Make sure VITE_RSVP_API_URL is set in your .env file and dev server is restarted.');
@@ -39,7 +57,7 @@ export const fetchRsvps = async () => {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const result = await response.json();
+    const result = await response.json() as { success: boolean; data?: Rsvp[]; error?: string };
     console.log('RSVP data received:', result);
     
     if (result.success) {
@@ -48,13 +66,14 @@ export const fetchRsvps = async () => {
       throw new Error(result.error || 'Failed to fetch RSVPs');
     }
   } catch (error) {
-    console.error('Failed to fetch RSVPs:', error);
+    const err = error as Error;
+    console.error('Failed to fetch RSVPs:', err);
     console.error('Error details:', {
-      message: error.message,
-      stack: error.stack,
+      message: err.message,
+      stack: err.stack,
       endpoint: API_ENDPOINT
     });
-    if (error.message.includes('NetworkError') || error.message.includes('Failed to fetch')) {
+    if (err.message.includes('NetworkError') || err.message.includes('Failed to fetch')) {
       throw new Error('Unable to connect to the RSVP server. Please check that the Google Apps Script is deployed and accessible. Check the browser console for more details.');
     }
     throw new Error('Failed to load RSVPs. Please check your connection and try again.');
@@ -63,10 +82,10 @@ export const fetchRsvps = async () => {
 
 /**
  * Submit a new RSVP to Google Sheets API
- * @param {Object} rsvpData - { name: string, email?: string, phone?: string, item: string, dietaryRestrictions?: string }
- * @returns {Promise<Object>} The created RSVP object
+ * @param {RsvpData} rsvpData - RSVP data object
+ * @returns {Promise<Rsvp>} The created RSVP object
  */
-export const submitRsvp = async (rsvpData) => {
+export const submitRsvp = async (rsvpData: RsvpData): Promise<Rsvp> => {
   // Validate required fields
   if (!rsvpData.name || !rsvpData.item) {
     throw new Error('Name and item are required');
@@ -75,7 +94,7 @@ export const submitRsvp = async (rsvpData) => {
   if (!API_ENDPOINT) {
     console.warn('RSVP API endpoint not configured. Using fallback in-memory storage.');
     // Fallback to in-memory storage if API is not configured
-    const newRsvp = {
+    const newRsvp: Rsvp = {
       id: Date.now().toString(),
       name: rsvpData.name.trim(),
       email: rsvpData.email?.trim() || '',
@@ -110,30 +129,31 @@ export const submitRsvp = async (rsvpData) => {
     console.log('Response status:', response.status, response.statusText);
 
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
+      const errorData = await response.json().catch(() => ({})) as { error?: string };
       console.error('Response error:', errorData);
       throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
     }
 
-    const result = await response.json();
+    const result = await response.json() as { success: boolean; data?: Rsvp; error?: string };
     console.log('RSVP submission result:', result);
     
-    if (result.success) {
+    if (result.success && result.data) {
       return result.data;
     } else {
       throw new Error(result.error || 'Failed to submit RSVP');
     }
   } catch (error) {
-    console.error('Failed to submit RSVP:', error);
+    const err = error as Error;
+    console.error('Failed to submit RSVP:', err);
     console.error('Error details:', {
-      message: error.message,
-      stack: error.stack,
+      message: err.message,
+      stack: err.stack,
       endpoint: API_ENDPOINT
     });
-    if (error.message.includes('NetworkError') || error.message.includes('Failed to fetch')) {
+    if (err.message.includes('NetworkError') || err.message.includes('Failed to fetch')) {
       throw new Error('Unable to connect to the RSVP server. Please check that the Google Apps Script is deployed and accessible. Check the browser console for more details.');
     }
-    throw new Error(error.message || 'Failed to submit RSVP. Please check your connection and try again.');
+    throw new Error(err.message || 'Failed to submit RSVP. Please check your connection and try again.');
   }
 };
 
@@ -142,9 +162,10 @@ export const submitRsvp = async (rsvpData) => {
  * @param {string} id - The RSVP ID to delete
  * @returns {Promise<void>}
  */
-export const deleteRsvp = async (id) => {
+export const deleteRsvp = async (_id: string): Promise<void> => {
   // This would require a DELETE endpoint in the Google Apps Script
   // For now, this is a placeholder
   console.warn('Delete RSVP functionality not yet implemented in Google Sheets backend');
   return Promise.resolve();
 };
+

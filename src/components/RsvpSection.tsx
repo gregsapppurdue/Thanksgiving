@@ -1,15 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { fetchRsvps, submitRsvp } from '../services/rsvpService';
-
-interface Rsvp {
-  id: string;
-  name: string;
-  email: string;
-  phone?: string;
-  item: string;
-  dietaryRestrictions?: string;
-  submittedAt: string;
-}
+import { fetchRsvps, submitRsvp, type Rsvp } from '../services/rsvpService';
 
 export const RsvpSection: React.FC = () => {
   const [name, setName] = useState('');

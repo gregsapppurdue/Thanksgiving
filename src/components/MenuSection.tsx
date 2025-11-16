@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { menuItems } from '../data/menuItems';
+import { menuItems, type MenuItem } from '../data/menuItems';
 
 export const MenuSection: React.FC = () => {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
@@ -24,7 +24,7 @@ export const MenuSection: React.FC = () => {
       </p>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {menuItems.map((item: { id: string; name: string; photo: string; hover: { history: string; ingredients: string[] } }) => (
+        {menuItems.map((item: MenuItem) => (
           <div
             key={item.id}
             className="relative group"
@@ -97,7 +97,7 @@ export const MenuSection: React.FC = () => {
                         Ingredients:
                       </p>
                           <ul className="text-xs text-sage/90 space-y-1">
-                            {item.hover.ingredients.map((ingredient: string, idx: number) => (
+                            {item.hover.ingredients.map((ingredient, idx) => (
                           <li key={idx} className="flex items-start">
                             <span className="text-pumpkin mr-2">•</span>
                             <span>{ingredient}</span>

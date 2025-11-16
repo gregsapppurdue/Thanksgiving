@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { menuItems, type MenuItem } from '../data/menuItems.ts';
+import { menuItems, type MenuItem } from '../data/menuItems';
 
 export const MenuSection: React.FC = () => {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);

@@ -1,160 +1,237 @@
 export const menuItems = [
   {
-    id: 1,
-    name: 'Roasted Turkey',
-    description: 'Herb-brined and slow-roasted to golden perfection',
-    course: 'Main',
-    ingredients: [
-      'Whole turkey (12-14 lbs)',
-      'Fresh rosemary',
-      'Fresh thyme',
-      'Fresh sage',
-      'Garlic cloves',
-      'Butter',
-      'Salt',
-      'Black pepper',
-      'Onion',
-      'Celery',
-      'Chicken broth'
-    ]
+    id: "roast-turkey",
+    name: "Roast Turkey",
+    photo: "/images/roast-turkey.jpg",
+    hover: {
+      history:
+        "Turkey became the symbolic centerpiece of American Thanksgiving in the 19th century, representing abundance, harvest, and family togetherness.",
+      ingredients: [
+        "Whole turkey",
+        "Butter",
+        "Salt",
+        "Pepper",
+        "Rosemary",
+        "Thyme",
+        "Sage",
+        "Garlic",
+        "Onion",
+        "Carrots",
+        "Celery"
+      ]
+    }
   },
   {
-    id: 2,
-    name: 'Classic Stuffing',
-    description: 'Traditional bread stuffing with herbs and vegetables',
-    course: 'Side',
-    ingredients: [
-      'Day-old bread cubes',
-      'Butter',
-      'Onion',
-      'Celery',
-      'Fresh sage',
-      'Fresh thyme',
-      'Chicken broth',
-      'Eggs',
-      'Salt',
-      'Black pepper'
-    ]
+    id: "turkey-gravy",
+    name: "Turkey Gravy",
+    photo: "/images/turkey-gravy.jpg",
+    hover: {
+      history:
+        "Turkey gravy reflects early American home cooking traditions of using every part of the bird and turning drippings into a rich, comforting sauce.",
+      ingredients: [
+        "Turkey drippings",
+        "Flour",
+        "Butter",
+        "Salt",
+        "Pepper",
+        "Chicken broth"
+      ]
+    }
   },
   {
-    id: 3,
-    name: 'Mashed Potatoes',
-    description: 'Creamy Yukon Gold potatoes with butter and cream',
-    course: 'Side',
-    ingredients: [
-      'Yukon Gold potatoes',
-      'Butter',
-      'Heavy cream',
-      'Salt',
-      'White pepper',
-      'Chives'
-    ]
+    id: "classic-bread-stuffing",
+    name: "Classic Bread Stuffing",
+    photo: "/images/classic-bread-stuffing.jpg",
+    hover: {
+      history:
+        "Bread-based stuffing evolved from European recipes but became distinctly American, with each region adding its own twist, making it a core Thanksgiving side.",
+      ingredients: [
+        "Bread cubes",
+        "Butter",
+        "Onion",
+        "Celery",
+        "Chicken broth",
+        "Sage",
+        "Thyme",
+        "Salt",
+        "Pepper"
+      ]
+    }
   },
   {
-    id: 4,
-    name: 'Green Bean Casserole',
-    description: 'Crispy green beans with creamy mushroom sauce',
-    course: 'Side',
-    ingredients: [
-      'Fresh green beans',
-      'Cream of mushroom soup',
-      'Milk',
-      'French fried onions',
-      'Black pepper',
-      'Garlic powder'
-    ]
+    id: "pumpkin-pie",
+    name: "Pumpkin Pie",
+    photo: "/images/pumpkin-pie.jpg",
+    hover: {
+      history:
+        "Pumpkin, native to North America, has been used since colonial times, and pumpkin pie became an iconic symbol of New England Thanksgiving and autumn harvests.",
+      ingredients: [
+        "Pumpkin purée",
+        "Pie crust",
+        "Eggs",
+        "Sugar",
+        "Cinnamon",
+        "Nutmeg",
+        "Ginger",
+        "Evaporated milk"
+      ]
+    }
   },
   {
-    id: 5,
-    name: 'Cranberry Sauce',
-    description: 'Homemade sweet and tart cranberry relish',
-    course: 'Side',
-    ingredients: [
-      'Fresh cranberries',
-      'Granulated sugar',
-      'Orange juice',
-      'Orange zest',
-      'Cinnamon stick',
-      'Water'
-    ]
+    id: "raisin-pie",
+    name: "Raisin Pie",
+    photo: "/images/raisin-pie.jpg",
+    hover: {
+      history:
+        "Raisin pie is an old-fashioned American dessert that predates easy access to fresh fruit in winter, reflecting how preserved ingredients were used for holiday treats.",
+      ingredients: [
+        "Raisins",
+        "Pie crust",
+        "Sugar",
+        "Butter",
+        "Cornstarch",
+        "Cinnamon",
+        "Lemon juice",
+        "Water"
+      ]
+    }
   },
   {
-    id: 6,
-    name: 'Sweet Potato Casserole',
-    description: 'Mashed sweet potatoes topped with marshmallows',
-    course: 'Side',
-    ingredients: [
-      'Sweet potatoes',
-      'Butter',
-      'Brown sugar',
-      'Cinnamon',
-      'Nutmeg',
-      'Marshmallows',
-      'Pecans'
-    ]
+    id: "mashed-potatoes",
+    name: "Mashed Potatoes",
+    photo: "/images/mashed-potatoes.jpg",
+    hover: {
+      history:
+        "Mashed potatoes are a classic American comfort food and a universal Thanksgiving staple, known for soaking up gravy and anchoring the plate.",
+      ingredients: ["Potatoes", "Butter", "Milk or cream", "Salt", "Pepper"]
+    }
   },
   {
-    id: 7,
-    name: 'Pumpkin Pie',
-    description: 'Classic spiced pumpkin pie with flaky crust',
-    course: 'Dessert',
-    ingredients: [
-      'Pumpkin puree',
-      'Evaporated milk',
-      'Eggs',
-      'Brown sugar',
-      'Cinnamon',
-      'Ginger',
-      'Nutmeg',
-      'Cloves',
-      'Salt',
-      'Pie crust'
-    ]
+    id: "sweet-potato-casserole",
+    name: "Sweet Potato Casserole with Marshmallows",
+    photo: "/images/sweet-potato-casserole.jpg",
+    hover: {
+      history:
+        "Sweet potatoes are native to the Americas, and topping them with marshmallows emerged in the early 1900s as a marketing idea, becoming a beloved modern Thanksgiving dish.",
+      ingredients: [
+        "Sweet potatoes",
+        "Butter",
+        "Brown sugar",
+        "Milk",
+        "Eggs",
+        "Marshmallows"
+      ]
+    }
   },
   {
-    id: 8,
-    name: 'Apple Pie',
-    description: 'Warm apple pie with cinnamon and nutmeg',
-    course: 'Dessert',
-    ingredients: [
-      'Granny Smith apples',
-      'Sugar',
-      'Cinnamon',
-      'Nutmeg',
-      'Butter',
-      'Lemon juice',
-      'Pie crust',
-      'Egg wash'
-    ]
+    id: "green-bean-casserole",
+    name: "Green Bean Casserole",
+    photo: "/images/green-bean-casserole.jpg",
+    hover: {
+      history:
+        "Green bean casserole was created in 1955 by the Campbell Soup Company and quickly became a Thanksgiving classic, representing mid-century American convenience cooking.",
+      ingredients: [
+        "Green beans",
+        "Cream of mushroom soup",
+        "Fried onions",
+        "Milk",
+        "Salt",
+        "Pepper"
+      ]
+    }
   },
   {
-    id: 9,
-    name: 'Mulled Cider',
-    description: 'Warm spiced apple cider',
-    course: 'Drink',
-    ingredients: [
-      'Apple cider',
-      'Cinnamon sticks',
-      'Whole cloves',
-      'Orange slices',
-      'Brown sugar',
-      'Nutmeg'
-    ]
+    id: "cranberry-sauce",
+    name: "Cranberry Sauce",
+    photo: "/images/cranberry-sauce.jpg",
+    hover: {
+      history:
+        "Cranberries are native to North America and were used by Indigenous peoples long before European settlers; cranberry sauce now symbolizes the autumn harvest and adds bright acidity to the meal.",
+      ingredients: ["Fresh cranberries", "Sugar", "Water"]
+    }
   },
   {
-    id: 10,
-    name: 'Dinner Rolls',
-    description: 'Fresh-baked buttery dinner rolls',
-    course: 'Side',
-    ingredients: [
-      'All-purpose flour',
-      'Yeast',
-      'Milk',
-      'Butter',
-      'Sugar',
-      'Salt',
-      'Egg'
-    ]
+    id: "cornbread",
+    name: "Cornbread",
+    photo: "/images/cornbread.jpg",
+    hover: {
+      history:
+        "Cornbread is rooted in Indigenous corn-based cooking methods, later adapted by European settlers and the American South, making it a core comfort side at many Thanksgiving tables.",
+      ingredients: [
+        "Cornmeal",
+        "Flour",
+        "Sugar",
+        "Baking powder",
+        "Salt",
+        "Eggs",
+        "Milk",
+        "Butter"
+      ]
+    }
+  },
+  {
+    id: "corn-casserole",
+    name: "Corn Casserole",
+    photo: "/images/corn-casserole.jpg",
+    hover: {
+      history:
+        "Corn casserole blends corn, dairy, and baking mix into a soft, custardy side dish, reflecting the importance of corn in American agriculture and holiday comfort food.",
+      ingredients: [
+        "Corn kernels",
+        "Creamed corn",
+        "Eggs",
+        "Butter",
+        "Sour cream",
+        "Corn muffin mix"
+      ]
+    }
+  },
+  {
+    id: "apple-cider",
+    name: "Hot Apple Cider",
+    photo: "/images/apple-cider.jpg",
+    hover: {
+      history:
+        "Apple cider has deep roots in colonial America, when apples were widely grown and pressed for cider; today it's a signature fall drink served warm at holiday gatherings.",
+      ingredients: ["Apple cider", "Cinnamon sticks", "Cloves", "Orange slices"]
+    }
+  },
+  {
+    id: "deviled-eggs",
+    name: "Deviled Eggs",
+    photo: "/images/deviled-eggs.jpg",
+    hover: {
+      history:
+        "Deviled eggs became popular in 20th-century American home entertaining and potlucks, and they often appear as an appetizer at family holiday gatherings like Thanksgiving.",
+      ingredients: [
+        "Eggs",
+        "Mayonnaise",
+        "Mustard",
+        "Vinegar",
+        "Salt",
+        "Pepper",
+        "Paprika"
+      ]
+    }
+  },
+  {
+    id: "stuffed-acorn-squash",
+    name: "Stuffed Acorn Squash with Wild Rice, Cranberries & Pecans",
+    photo: "/images/stuffed-acorn-squash.jpg",
+    hover: {
+      history:
+        "Stuffed acorn squash highlights Indigenous North American ingredients—squash, wild rice, cranberries, and nuts—capturing the harvest spirit and serving as a hearty vegetarian centerpiece.",
+      ingredients: [
+        "Acorn squash",
+        "Wild rice",
+        "Cranberries",
+        "Pecans",
+        "Olive oil",
+        "Salt",
+        "Pepper",
+        "Thyme",
+        "Vegetable broth"
+      ]
+    }
   }
 ];
-

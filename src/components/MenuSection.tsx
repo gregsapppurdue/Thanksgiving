@@ -2,13 +2,7 @@ import React, { useState } from 'react';
 import { menuItems } from '../data/menuItems';
 
 export const MenuSection: React.FC = () => {
-  const [hoveredItem, setHoveredItem] = useState<number | null>(null);
-
-  const courses = ['Main', 'Side', 'Dessert', 'Drink'];
-  const groupedItems = courses.reduce((acc, course) => {
-    acc[course] = menuItems.filter(item => item.course === course);
-    return acc;
-  }, {} as Record<string, typeof menuItems>);
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
   return (
     <div className="bg-white/80 backdrop-blur rounded-2xl shadow-md border border-amber-100 p-6 md:p-8">
@@ -19,74 +13,89 @@ export const MenuSection: React.FC = () => {
         </span>
       </h2>
       <p className="text-sm md:text-base text-sage/90 mb-8">
-        Hover over any menu item to see the full ingredient list.
+        Hover over any menu item to see its history and full ingredient list.
       </p>
 
-      <div className="space-y-8">
-        {courses.map((course) => {
-          const items = groupedItems[course];
-          if (items.length === 0) return null;
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {menuItems.map((item) => (
+          <div
+            key={item.id}
+            className="relative group"
+            onMouseEnter={() => setHoveredItem(item.id)}
+            onMouseLeave={() => setHoveredItem(null)}
+            onFocus={() => setHoveredItem(item.id)}
+            onBlur={() => setHoveredItem(null)}
+          >
+            <div
+              className={`bg-white rounded-lg overflow-hidden border-2 transition-all duration-300 cursor-pointer ${
+                hoveredItem === item.id
+                  ? 'border-pumpkin shadow-lg scale-105'
+                  : 'border-amber-200 hover:border-amber-300'
+              }`}
+              tabIndex={0}
+              role="button"
+              aria-label={`${item.name}. Hover or focus to see history and ingredients.`}
+            >
+              {/* Photo */}
+              <div className="relative h-48 bg-gradient-to-br from-amber-100 to-amber-200 overflow-hidden">
+                <img
+                  src={item.photo}
+                  alt={item.name}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    // Fallback if image doesn't exist
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = 'none';
+                  }}
+                />
+                {hoveredItem === item.id && (
+                  <div className="absolute inset-0 bg-pumpkin/20 transition-opacity duration-300" />
+                )}
+              </div>
 
-          return (
-            <div key={course}>
-              <h3 className="text-xl font-serif font-semibold text-maple mb-4 border-b border-amber-200 pb-2">
-                {course}
-              </h3>
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {items.map((item) => (
+              {/* Content */}
+              <div className="p-4">
+                <h4 className="font-semibold text-sage text-lg mb-3">
+                  {item.name}
+                </h4>
+
+                {hoveredItem === item.id && (
                   <div
-                    key={item.id}
-                    className="relative group"
-                    onMouseEnter={() => setHoveredItem(item.id)}
-                    onMouseLeave={() => setHoveredItem(null)}
-                    onFocus={() => setHoveredItem(item.id)}
-                    onBlur={() => setHoveredItem(null)}
+                    className="mt-3 pt-3 border-t border-amber-200 animate-in fade-in duration-200 space-y-3"
+                    role="region"
+                    aria-label="History and Ingredients"
                   >
-                    <div
-                      className={`bg-white rounded-lg p-4 border-2 transition-all duration-300 cursor-pointer ${
-                        hoveredItem === item.id
-                          ? 'border-pumpkin shadow-lg scale-105'
-                          : 'border-amber-200 hover:border-amber-300'
-                      }`}
-                      tabIndex={0}
-                      role="button"
-                      aria-label={`${item.name} - ${item.description}. Hover or focus to see ingredients.`}
-                    >
-                      <h4 className="font-semibold text-sage text-lg mb-1">
-                        {item.name}
-                      </h4>
-                      <p className="text-sm text-sage/80 mb-3">
-                        {item.description}
+                    {/* History */}
+                    <div>
+                      <p className="text-xs font-semibold text-pumpkin mb-2 uppercase tracking-wide">
+                        History:
                       </p>
+                      <p className="text-xs text-sage/90 leading-relaxed">
+                        {item.hover.history}
+                      </p>
+                    </div>
 
-                      {hoveredItem === item.id && (
-                        <div
-                          className="mt-3 pt-3 border-t border-amber-200 animate-in fade-in duration-200"
-                          role="region"
-                          aria-label="Ingredients"
-                        >
-                          <p className="text-xs font-semibold text-pumpkin mb-2 uppercase tracking-wide">
-                            Ingredients:
-                          </p>
-                          <ul className="text-xs text-sage/90 space-y-1">
-                            {item.ingredients.map((ingredient, idx) => (
-                              <li key={idx} className="flex items-start">
-                                <span className="text-pumpkin mr-2">•</span>
-                                <span>{ingredient}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
+                    {/* Ingredients */}
+                    <div>
+                      <p className="text-xs font-semibold text-pumpkin mb-2 uppercase tracking-wide">
+                        Ingredients:
+                      </p>
+                      <ul className="text-xs text-sage/90 space-y-1">
+                        {item.hover.ingredients.map((ingredient, idx) => (
+                          <li key={idx} className="flex items-start">
+                            <span className="text-pumpkin mr-2">•</span>
+                            <span>{ingredient}</span>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                   </div>
-                ))}
+                )}
               </div>
             </div>
-          );
-        })}
+          </div>
+        ))}
       </div>
     </div>
   );
 };
-

@@ -14,10 +14,6 @@ RUN npm ci
 # Copy source code
 COPY . .
 
-# Build argument for environment variables
-ARG VITE_RSVP_API_URL
-ENV VITE_RSVP_API_URL=$VITE_RSVP_API_URL
-
 # Build the application
 RUN npm run build
 

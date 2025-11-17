@@ -36,7 +36,7 @@ After updating the SPREADSHEET_ID, you MUST redeploy:
 
 Open this URL in your browser:
 ```
-https://script.google.com/macros/s/AKfycbx24Z6R2Ya2YK7n34hKGxMSryTZorlViADsTPv_4uRj8FSULfY9QNRiEtZems5llMs/exec
+https://script.google.com/macros/s/AKfycbz_w-at4yiCdxlQBcXIWnzdUPFurc2-JOAX7jYSjLnucKfVi-ASO6JehY-zX3IF-XUK/exec
 ```
 
 **Expected result**: You should see:

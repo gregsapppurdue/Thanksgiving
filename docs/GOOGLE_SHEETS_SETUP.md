@@ -89,7 +89,7 @@ This guide will walk you through setting up a Google Sheets-based backend for st
    
    **Example:**
    ```
-https://script.google.com/macros/s/AKfycbx24Z6R2Ya2YK7n34hKGxMSryTZorlViADsTPv_4uRj8FSULfY9QNRiEtZems5llMs/exec
+https://script.google.com/macros/s/AKfycbz_w-at4yiCdxlQBcXIWnzdUPFurc2-JOAX7jYSjLnucKfVi-ASO6JehY-zX3IF-XUK/exec
    ```
 
 3. **Restart your development server**:

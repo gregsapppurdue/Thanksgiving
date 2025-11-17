@@ -179,34 +179,80 @@ function doGet(e) {
  */
 function doPost(e) {
   try {
+    Logger.log('=== POST Request Received ===');
+    Logger.log('Request contents: ' + (e.postData ? e.postData.contents : 'No postData'));
+    
     // Parse JSON from request body
     // Works with both application/json and text/plain content types
-    const requestData = JSON.parse(e.postData.contents);
+    let requestData;
+    try {
+      requestData = JSON.parse(e.postData.contents);
+      Logger.log('Parsed request data: ' + JSON.stringify(requestData));
+    } catch (parseError) {
+      Logger.log('JSON Parse Error: ' + parseError.toString());
+      return sendError('Invalid JSON in request body: ' + parseError.toString(), 400);
+    }
     
     // Validate required fields
     if (!requestData.name || !requestData.item) {
+      Logger.log('Validation failed: Missing name or item');
       return sendError('Name and item (drink/treat contribution) are required', 400);
     }
     
+    Logger.log('Attempting to get spreadsheet: ' + SPREADSHEET_ID);
+    Logger.log('Looking for sheet: ' + SHEET_NAME);
+    
     // Get the sheet
-    const sheet = getDataSheet();
+    let sheet;
+    try {
+      sheet = getDataSheet();
+      Logger.log('Sheet retrieved successfully: ' + sheet.getName());
+    } catch (sheetError) {
+      Logger.log('Error getting sheet: ' + sheetError.toString());
+      return sendError('Failed to access Google Sheet: ' + sheetError.toString(), 500);
+    }
     
     // Map data to sheet row format
     const rowData = mapToSheetRow(requestData);
+    Logger.log('Mapped row data: ' + JSON.stringify(rowData));
+    
+    // Get row count before append
+    const rowCountBefore = sheet.getLastRow();
+    Logger.log('Rows before append: ' + rowCountBefore);
     
     // Append row to sheet
-    sheet.appendRow(rowData);
+    try {
+      sheet.appendRow(rowData);
+      Logger.log('Row appended successfully');
+    } catch (appendError) {
+      Logger.log('Error appending row: ' + appendError.toString());
+      return sendError('Failed to save RSVP to sheet: ' + appendError.toString(), 500);
+    }
+    
+    // Verify the row was added
+    const rowCountAfter = sheet.getLastRow();
+    Logger.log('Rows after append: ' + rowCountAfter);
+    
+    if (rowCountAfter <= rowCountBefore) {
+      Logger.log('WARNING: Row count did not increase after append!');
+      return sendError('RSVP appeared to save but row count did not increase. Please check the sheet manually.', 500);
+    }
     
     // Get the new row number
     const lastRow = sheet.getLastRow();
     
     // Read back the new row to return it
     const newRow = sheet.getRange(lastRow, 1, 1, 9).getValues()[0];
+    Logger.log('Read back row: ' + JSON.stringify(newRow));
+    
     const newRsvp = mapFromSheetRow(newRow, lastRow - 2); // -2 because we skip header and use 0-based index
+    Logger.log('Mapped RSVP object: ' + JSON.stringify(newRsvp));
+    Logger.log('=== POST Request Completed Successfully ===');
     
     return sendSuccess(newRsvp, 201);
   } catch (error) {
     Logger.log('POST Error: ' + error.toString());
+    Logger.log('Error stack: ' + (error.stack || 'No stack trace'));
     return sendError('Failed to create RSVP: ' + error.toString(), 500);
   }
 }

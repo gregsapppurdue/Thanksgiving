@@ -4,7 +4,7 @@
 
 Open this URL directly in your browser:
 ```
-https://script.google.com/macros/s/AKfycbyWN1FfTG5fUW02_0Sr3rjjspF_y7VYSNv_ypJFsNU/exec
+https://script.google.com/macros/s/AKfycbz_w-at4yiCdxlQBcXIWnzdUPFurc2-JOAX7jYSjLnucKfVi-ASO6JehY-zX3IF-XUK/exec
 ```
 
 **Expected Result:**
@@ -41,7 +41,7 @@ https://script.google.com/macros/s/AKfycbyWN1FfTG5fUW02_0Sr3rjjspF_y7VYSNv_ypJFs
 If you have curl installed, you can test from the command line:
 
 ```bash
-curl "https://script.google.com/macros/s/AKfycbyWN1FfTG5fUW02_0Sr3rjjspF_y7VYSNv_ypJFsNU/exec"
+curl "https://script.google.com/macros/s/AKfycbz_w-at4yiCdxlQBcXIWnzdUPFurc2-JOAX7jYSjLnucKfVi-ASO6JehY-zX3IF-XUK/exec"
 ```
 
 You should see: `{"success":true,"data":[]}`

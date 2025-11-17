@@ -1,7 +1,7 @@
 import React from 'react';
-import { GeneralInfo } from './components/GeneralInfo';
-import { MenuSection } from './components/MenuSection';
-import { RsvpSection } from './components/RsvpSection';
+import { GeneralInfo } from './components/GeneralInfo.tsx';
+import { MenuSection } from './components/MenuSection.tsx';
+import { RsvpSection } from './components/RsvpSection.tsx';
 
 export const App: React.FC = () => {
   return (

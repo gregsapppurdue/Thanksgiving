@@ -14,7 +14,7 @@ This happens because `VITE_RSVP_API_URL` was not set during the Docker build.
 3. Click **Deploy** → **Manage deployments**
 4. Find your Web app deployment
 5. Copy the **Web app URL** (must end with `/exec`)
-   - Example: `https://script.google.com/macros/s/AKfycbw8kQ-VBrdIZuwUSPcdJKPAfqAnnuqBLS-UvspNmV77n8t7fDrZmTldrhmqQ8JjXzF8/exec`
+   - Example: `https://script.google.com/macros/s/AKfycbxToc0UHoqQCg6I4ycLiLQNimKaIoqp3tdgMAvXcwva3xI1Tp86z1K7j5BP-_PHq6G8/exec`
 
 ### Step 2: Redeploy with the Environment Variable
 
@@ -22,7 +22,7 @@ This happens because `VITE_RSVP_API_URL` was not set during the Docker build.
 
 ```bash
 gcloud builds submit --config cloudbuild.yaml \
-  --substitutions=_SERVICE_NAME=thanksgiving-app,_REGION=us-central1,_VITE_RSVP_API_URL="https://script.google.com/macros/s/AKfycbw8kQ-VBrdIZuwUSPcdJKPAfqAnnuqBLS-UvspNmV77n8t7fDrZmTldrhmqQ8JjXzF8/exec"
+  --substitutions=_SERVICE_NAME=thanksgiving-app,_REGION=us-central1,_VITE_RSVP_API_URL="https://script.google.com/macros/s/AKfycbxToc0UHoqQCg6I4ycLiLQNimKaIoqp3tdgMAvXcwva3xI1Tp86z1K7j5BP-_PHq6G8/exec"
 ```
 
 **Option B: Update Cloud Build Trigger**

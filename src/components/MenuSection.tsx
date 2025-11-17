@@ -19,9 +19,15 @@ export const MenuSection: React.FC = () => {
           🍽️
         </span>
       </h2>
-      <p className="text-sm md:text-base text-sage/90 mb-8">
+      <p className="text-sm md:text-base text-sage/90 mb-4">
         Hover over any menu item to see its history and full ingredient list.
       </p>
+
+      {/* Legend */}
+      <div className="mb-8 flex items-center gap-2 text-sm text-sage/80 bg-amber-50 border border-amber-200 rounded-lg px-4 py-2 inline-flex">
+        <span className="text-green-600 text-base">🌿</span>
+        <span>Indicates vegetarian-friendly options</span>
+      </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {menuItems.map((item: MenuItem) => (

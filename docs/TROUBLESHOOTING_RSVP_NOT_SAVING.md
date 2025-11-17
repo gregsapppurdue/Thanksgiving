@@ -60,7 +60,7 @@ The script looks for a sheet named `Sheet1` by default. Check your actual sheet:
 Test if the POST endpoint is working:
 
 ```bash
-curl -X POST "https://script.google.com/macros/s/AKfycbz_w-at4yiCdxlQBcXIWnzdUPFurc2-JOAX7jYSjLnucKfVi-ASO6JehY-zX3IF-XUK/exec" \
+curl -X POST "https://script.google.com/macros/s/AKfycbxe5Gvs7o6KzQH1ZV_UdkcNWrqSBEL-U2rl-Dk4PMQyixiAM7VzNU-iYDJx2nar2Rdh/exec" \
   -H "Content-Type: text/plain;charset=utf-8" \
   -d '{"name":"Test User","item":"Test Item"}'
 ```

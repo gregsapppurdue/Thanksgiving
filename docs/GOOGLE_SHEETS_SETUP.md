@@ -76,7 +76,7 @@ This guide will walk you through setting up a Google Sheets-based backend for st
    - **IMPORTANT**: Make sure the URL ends with `/exec` (not `/dev`)
    - The `/dev` URL is for testing only and won't work for production
    - **Copy this URL** - you'll need it for the frontend configuration
-   - **Example**: `https://script.google.com/macros/s/AKfycbxe5Gvs7o6KzQH1ZV_UdkcNWrqSBEL-U2rl-Dk4PMQyixiAM7VzNU-iYDJx2nar2Rdh/exec`
+   - **Example**: `https://script.google.com/macros/s/AKfycbw8kQ-VBrdIZuwUSPcdJKPAfqAnnuqBLS-UvspNmV77n8t7fDrZmTldrhmqQ8JjXzF8/exec`
 
 ## Step 4: Configure the Frontend
 
@@ -89,7 +89,7 @@ This guide will walk you through setting up a Google Sheets-based backend for st
    
    **Example:**
    ```
-https://script.google.com/macros/s/AKfycbxe5Gvs7o6KzQH1ZV_UdkcNWrqSBEL-U2rl-Dk4PMQyixiAM7VzNU-iYDJx2nar2Rdh/exec
+https://script.google.com/macros/s/AKfycbw8kQ-VBrdIZuwUSPcdJKPAfqAnnuqBLS-UvspNmV77n8t7fDrZmTldrhmqQ8JjXzF8/exec
    ```
 
 3. **Restart your development server**:

@@ -1,21 +1,97 @@
 # Google Cloud Build configuration for automated deployment
-# This file can be used with Cloud Build triggers for CI/CD
+# This file builds and deploys both the CORS proxy service and the main React app
 
 steps:
-  # Build the Docker image
+  # ===== PROXY SERVICE BUILD AND DEPLOYMENT =====
+  
+  # Build the proxy Docker image
   - name: 'gcr.io/cloud-builders/docker'
+    id: 'build-proxy'
+    dir: 'proxy'
     args:
       - 'build'
       - '--build-arg'
-      - 'VITE_RSVP_API_URL=${_VITE_RSVP_API_URL}'
+      - 'APPS_SCRIPT_URL=${_APPS_SCRIPT_URL}'
       - '-t'
-      - 'gcr.io/$PROJECT_ID/${_SERVICE_NAME}:$SHORT_SHA'
+      - 'gcr.io/$PROJECT_ID/${_PROXY_SERVICE_NAME}:$SHORT_SHA'
       - '-t'
-      - 'gcr.io/$PROJECT_ID/${_SERVICE_NAME}:latest'
+      - 'gcr.io/$PROJECT_ID/${_PROXY_SERVICE_NAME}:latest'
       - '.'
 
-  # Push the image to Container Registry
+  # Push the proxy image to Container Registry
   - name: 'gcr.io/cloud-builders/docker'
+    id: 'push-proxy'
+    args:
+      - 'push'
+      - 'gcr.io/$PROJECT_ID/${_PROXY_SERVICE_NAME}:$SHORT_SHA'
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'gcr.io/$PROJECT_ID/${_PROXY_SERVICE_NAME}:latest'
+
+  # Deploy proxy service to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    id: 'deploy-proxy'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - '${_PROXY_SERVICE_NAME}'
+      - '--image'
+      - 'gcr.io/$PROJECT_ID/${_PROXY_SERVICE_NAME}:$SHORT_SHA'
+      - '--platform'
+      - 'managed'
+      - '--region'
+      - '${_REGION}'
+      - '--allow-unauthenticated'
+      - '--memory'
+      - '256Mi'
+      - '--cpu'
+      - '1'
+      - '--min-instances'
+      - '0'
+      - '--max-instances'
+      - '10'
+      - '--timeout'
+      - '60'
+      - '--port'
+      - '8080'
+      - '--set-env-vars'
+      - 'APPS_SCRIPT_URL=${_APPS_SCRIPT_URL},PORT=8080'
+
+  # Get the proxy service URL and store it
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    id: 'get-proxy-url'
+    entrypoint: bash
+    args:
+      - '-c'
+      - |
+        PROXY_URL=$$(gcloud run services describe ${_PROXY_SERVICE_NAME} --region=${_REGION} --format='value(status.url)')
+        PROXY_API_URL="$$PROXY_URL/api/rsvp"
+        echo "Proxy API URL: $$PROXY_API_URL"
+        echo "$$PROXY_API_URL" > /workspace/proxy_api_url.txt
+
+  # ===== MAIN APP BUILD AND DEPLOYMENT =====
+  
+  # Build the main app Docker image (using proxy URL from file)
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'build-main-app'
+    entrypoint: bash
+    args:
+      - '-c'
+      - |
+        PROXY_API_URL=$$(cat /workspace/proxy_api_url.txt)
+        echo "Building main app with proxy URL: $$PROXY_API_URL"
+        docker build \
+          --build-arg VITE_RSVP_API_URL="$$PROXY_API_URL" \
+          -t gcr.io/$PROJECT_ID/${_SERVICE_NAME}:$SHORT_SHA \
+          -t gcr.io/$PROJECT_ID/${_SERVICE_NAME}:latest \
+          .
+
+  # Push the main app image to Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'push-main-app'
     args:
       - 'push'
       - 'gcr.io/$PROJECT_ID/${_SERVICE_NAME}:$SHORT_SHA'
@@ -25,8 +101,9 @@ steps:
       - 'push'
       - 'gcr.io/$PROJECT_ID/${_SERVICE_NAME}:latest'
 
-  # Deploy to Cloud Run
+  # Deploy main app to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    id: 'deploy-main-app'
     entrypoint: gcloud
     args:
       - 'run'
@@ -51,13 +128,15 @@ steps:
       - '300'
       - '--port'
       - '8080'
-      - '--set-env-vars'
-      - 'VITE_RSVP_API_URL=${_VITE_RSVP_API_URL}'
 
 # Substitution variables (set these in Cloud Build triggers or via gcloud)
-# _SERVICE_NAME: thanksgiving-app
+# _SERVICE_NAME: thanksgiving-app (main React app service name)
+# _PROXY_SERVICE_NAME: rsvp-proxy (CORS proxy service name)
 # _REGION: us-central1
-# _VITE_RSVP_API_URL: https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec
+# _APPS_SCRIPT_URL: https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec (Google Apps Script URL)
+#
+# Note: The proxy service URL is automatically determined after deployment
+# and used to build the main app with the correct VITE_RSVP_API_URL
 
 # Options
 options:

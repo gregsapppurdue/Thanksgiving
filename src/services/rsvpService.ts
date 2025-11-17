@@ -1,5 +1,5 @@
-// Service for RSVP management using Google Sheets backend
-// The API endpoint URL should be set in environment variables
+// Service for RSVP management using Cloud Run CORS Proxy
+// The API endpoint URL should point to the Cloud Run proxy service
 
 export interface RsvpData {
   name: string;
@@ -41,13 +41,15 @@ export const fetchRsvps = async (): Promise<Rsvp[]> => {
   }
 
   try {
-    console.log('Fetching RSVPs from:', API_ENDPOINT);
-    // Google Apps Script web apps - try with minimal headers
+    console.log('Fetching RSVPs from proxy:', API_ENDPOINT);
     const response = await fetch(API_ENDPOINT, {
       method: 'GET',
       mode: 'cors',
       cache: 'no-cache',
       credentials: 'omit',
+      headers: {
+        'Content-Type': 'application/json',
+      },
     });
 
     console.log('Response status:', response.status, response.statusText);
@@ -75,7 +77,7 @@ export const fetchRsvps = async (): Promise<Rsvp[]> => {
       endpoint: API_ENDPOINT
     });
     if (err.message.includes('NetworkError') || err.message.includes('Failed to fetch')) {
-      throw new Error('Unable to connect to the RSVP server. Please check that the Google Apps Script is deployed and accessible. Check the browser console for more details.');
+      throw new Error('Unable to connect to the RSVP service. Please check your connection and try again.');
     }
     throw new Error('Failed to load RSVPs. Please check your connection and try again.');
   }
@@ -100,16 +102,14 @@ export const submitRsvp = async (rsvpData: RsvpData): Promise<Rsvp> => {
   }
 
   try {
-    console.log('📤 Submitting RSVP to:', API_ENDPOINT);
+    console.log('📤 Submitting RSVP to proxy:', API_ENDPOINT);
     console.log('📤 RSVP data:', JSON.stringify(rsvpData, null, 2));
     
-    // Use text/plain to avoid CORS preflight (Google Apps Script limitation)
-    // The body is still JSON, but the Content-Type avoids the OPTIONS request
     const response = await fetch(API_ENDPOINT, {
       method: 'POST',
       mode: 'cors',
       headers: {
-        'Content-Type': 'text/plain;charset=utf-8',
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         name: rsvpData.name.trim(),
@@ -167,7 +167,7 @@ export const submitRsvp = async (rsvpData: RsvpData): Promise<Rsvp> => {
       endpoint: API_ENDPOINT
     });
     if (err.message.includes('NetworkError') || err.message.includes('Failed to fetch')) {
-      throw new Error('Unable to connect to the RSVP server. Please check that the Google Apps Script is deployed and accessible. Check the browser console for more details.');
+      throw new Error('Unable to connect to the RSVP service. Please check your connection and try again.');
     }
     throw new Error(err.message || 'Failed to submit RSVP. Please check your connection and try again.');
   }

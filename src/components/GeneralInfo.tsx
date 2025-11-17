@@ -3,7 +3,7 @@ import React from 'react';
 export const GeneralInfo: React.FC = () => {
   return (
     <div className="bg-white/80 backdrop-blur rounded-2xl shadow-md border border-amber-100 p-6 md:p-8">
-      <h2 className="text-2xl md:text-3xl font-serif font-semibold text-pumpkin mb-4 flex items-center gap-2">
+      <h2 className="text-2xl md:text-3xl font-serif font-semibold text-pumpkin mb-4 flex items-center justify-center gap-2">
         <span>Gather Around the Table</span>
         <span className="text-2xl" aria-hidden="true">
           🦃

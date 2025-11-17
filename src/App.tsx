@@ -6,7 +6,7 @@ import { RsvpSection } from './components/RsvpSection.tsx';
 export const App: React.FC = () => {
   return (
     <div className="text-sage">
-      <header className="bg-gradient-to-b from-pumpkin to-maple text-wheat shadow-lg">
+      <header className="sticky top-0 z-50 bg-gradient-to-b from-pumpkin to-maple text-wheat shadow-lg">
         <div className="max-w-5xl mx-auto px-4 py-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div className="flex items-center gap-4">
             <img
@@ -32,7 +32,13 @@ export const App: React.FC = () => {
               className="px-3 py-2 rounded-full bg-wheat/10 hover:bg-wheat/20 border border-wheat/30 transition-colors duration-200"
               onClick={(e) => {
                 e.preventDefault();
-                document.getElementById('info')?.scrollIntoView({ behavior: 'smooth' });
+                const element = document.getElementById('info');
+                if (element) {
+                  const headerOffset = 100; // Approximate header height
+                  const elementPosition = element.getBoundingClientRect().top;
+                  const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                  window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                }
               }}
             >
               Info
@@ -42,7 +48,13 @@ export const App: React.FC = () => {
               className="px-3 py-2 rounded-full bg-wheat/10 hover:bg-wheat/20 border border-wheat/30 transition-colors duration-200"
               onClick={(e) => {
                 e.preventDefault();
-                document.getElementById('menu')?.scrollIntoView({ behavior: 'smooth' });
+                const element = document.getElementById('menu');
+                if (element) {
+                  const headerOffset = 100; // Approximate header height
+                  const elementPosition = element.getBoundingClientRect().top;
+                  const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                  window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                }
               }}
             >
               Menu
@@ -52,7 +64,13 @@ export const App: React.FC = () => {
               className="px-3 py-2 rounded-full bg-wheat text-pumpkin font-medium shadow-sm hover:bg-amber-100 transition-all duration-200 hover:scale-105"
               onClick={(e) => {
                 e.preventDefault();
-                document.getElementById('rsvp')?.scrollIntoView({ behavior: 'smooth' });
+                const element = document.getElementById('rsvp');
+                if (element) {
+                  const headerOffset = 100; // Approximate header height
+                  const elementPosition = element.getBoundingClientRect().top;
+                  const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                  window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                }
               }}
             >
               RSVP
@@ -62,13 +80,13 @@ export const App: React.FC = () => {
       </header>
 
       <main className="max-w-5xl mx-auto px-4 py-10 space-y-16">
-        <section id="info">
+        <section id="info" className="scroll-mt-24">
           <GeneralInfo />
         </section>
-        <section id="menu">
+        <section id="menu" className="scroll-mt-24">
           <MenuSection />
         </section>
-        <section id="rsvp">
+        <section id="rsvp" className="scroll-mt-24">
           <RsvpSection />
         </section>
       </main>

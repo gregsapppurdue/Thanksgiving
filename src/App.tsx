@@ -6,7 +6,7 @@ import { RsvpSection } from './components/RsvpSection.tsx';
 export const App: React.FC = () => {
   return (
     <div className="text-sage">
-      <header className="sticky top-0 z-50 bg-gradient-to-b from-pumpkin to-maple text-wheat shadow-lg">
+      <header className="sticky top-0 z-50 bg-gradient-to-b from-pumpkin to-maple text-wheat shadow-lg relative overflow-visible">
         <div className="max-w-5xl mx-auto px-4 py-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div className="flex items-center gap-4">
             <img
@@ -26,7 +26,7 @@ export const App: React.FC = () => {
               </p>
             </div>
           </div>
-          <nav className="flex gap-3 text-sm md:text-base">
+          <nav className="flex gap-3 text-sm md:text-base items-center relative">
             <a 
               href="#info" 
               className="px-3 py-2 rounded-full bg-wheat/10 hover:bg-wheat/20 border border-wheat/30 transition-colors duration-200"
@@ -60,8 +60,9 @@ export const App: React.FC = () => {
               Menu
             </a>
             <a 
+              id="rsvp-button"
               href="#rsvp" 
-              className="px-3 py-2 rounded-full bg-wheat text-pumpkin font-medium shadow-sm hover:bg-amber-100 transition-all duration-200 hover:scale-105"
+              className="px-3 py-2 rounded-full bg-wheat text-pumpkin font-medium shadow-sm hover:bg-amber-100 transition-all duration-200 hover:scale-105 relative"
               onClick={(e) => {
                 e.preventDefault();
                 const element = document.getElementById('rsvp');
@@ -73,6 +74,9 @@ export const App: React.FC = () => {
                 }
               }}
             >
+              <span className="absolute -top-10 left-1/2 -translate-x-1/2 text-wheat text-4xl animate-flash pointer-events-none whitespace-nowrap">
+                ↓
+              </span>
               RSVP
             </a>
           </nav>

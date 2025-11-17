@@ -1,24 +1,25 @@
 # Google Cloud Build configuration for automated deployment
-# This file builds and deploys both the CORS proxy service and the main React app
+# Builds and deploys:
+# 1) rsvp-proxy (Node.js → Apps Script)
+# 2) thanksgiving-app (React/Vite → NGINX)
 
 steps:
-  # ===== PROXY SERVICE BUILD AND DEPLOYMENT =====
-  
-  # Build the proxy Docker image
+  # ==========================
+  # BUILD PROXY SERVICE
+  # ==========================
   - name: 'gcr.io/cloud-builders/docker'
     id: 'build-proxy'
     dir: 'proxy'
     args:
       - 'build'
-      - '--build-arg'
-      - 'APPS_SCRIPT_URL=${_APPS_SCRIPT_URL}'
+      - '--build-arg=APPS_SCRIPT_URL=${_APPS_SCRIPT_URL}'
       - '-t'
       - 'gcr.io/$PROJECT_ID/${_PROXY_SERVICE_NAME}:$SHORT_SHA'
       - '-t'
       - 'gcr.io/$PROJECT_ID/${_PROXY_SERVICE_NAME}:latest'
       - '.'
 
-  # Push the proxy image to Container Registry
+  # Push proxy image
   - name: 'gcr.io/cloud-builders/docker'
     id: 'push-proxy'
     args:
@@ -30,51 +31,60 @@ steps:
       - 'push'
       - 'gcr.io/$PROJECT_ID/${_PROXY_SERVICE_NAME}:latest'
 
-  # Deploy proxy service to Cloud Run
+  # ==========================
+  # DEPLOY PROXY SERVICE
+  # ==========================
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     id: 'deploy-proxy'
     entrypoint: gcloud
     args:
-      - 'run'
-      - 'deploy'
-      - '${_PROXY_SERVICE_NAME}'
-      - '--image'
-      - 'gcr.io/$PROJECT_ID/${_PROXY_SERVICE_NAME}:$SHORT_SHA'
-      - '--platform'
-      - 'managed'
-      - '--region'
-      - '${_REGION}'
-      - '--allow-unauthenticated'
-      - '--memory'
-      - '256Mi'
-      - '--cpu'
-      - '1'
-      - '--min-instances'
-      - '0'
-      - '--max-instances'
-      - '10'
-      - '--timeout'
-      - '60'
-      - '--port'
-      - '8080'
-      - '--set-env-vars'
-      - 'APPS_SCRIPT_URL=${_APPS_SCRIPT_URL},PORT=8080'
+      [
+        'run','deploy','${_PROXY_SERVICE_NAME}',
+        '--image','gcr.io/$PROJECT_ID/${_PROXY_SERVICE_NAME}:$SHORT_SHA',
+        '--platform','managed',
+        '--region','${_REGION}',
+        '--allow-unauthenticated',
+        '--memory','256Mi',
+        '--cpu','1',
+        '--min-instances','0',
+        '--max-instances','10',
+        '--timeout','60',
+        '--port','8080',
+        '--set-env-vars','APPS_SCRIPT_URL=${_APPS_SCRIPT_URL},PORT=8080'
+      ]
 
-  # Get the proxy service URL and store it
+  # ==========================
+  # GET PROXY URL (WITH RETRY)
+  # ==========================
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     id: 'get-proxy-url'
     entrypoint: bash
     args:
       - '-c'
       - |
-        PROXY_URL=$$(gcloud run services describe ${_PROXY_SERVICE_NAME} --region=${_REGION} --format='value(status.url)')
-        PROXY_API_URL="$$PROXY_URL/api/rsvp"
-        echo "Proxy API URL: $$PROXY_API_URL"
-        echo "$$PROXY_API_URL" > /workspace/proxy_api_url.txt
+        echo "Waiting for proxy service URL..."
+        for i in {1..10}; do
+          PROXY_URL=$$(gcloud run services describe ${_PROXY_SERVICE_NAME} \
+            --region=${_REGION} \
+            --format='value(status.url)')
+          if [[ ! -z "$$PROXY_URL" ]]; then
+            echo "✓ Proxy URL: $$PROXY_URL"
+            break
+          fi
+          echo "Proxy URL not ready yet... retrying in 5s"
+          sleep 5
+        done
 
-  # ===== MAIN APP BUILD AND DEPLOYMENT =====
-  
-  # Build the main app Docker image (using proxy URL from file)
+        if [[ -z "$$PROXY_URL" ]]; then
+          echo "ERROR: Proxy URL never resolved"
+          exit 1
+        fi
+
+        echo "$$PROXY_URL/api/rsvp" > /workspace/proxy_api_url.txt
+
+  # ==========================
+  # BUILD MAIN APP (inject proxy URL)
+  # ==========================
   - name: 'gcr.io/cloud-builders/docker'
     id: 'build-main-app'
     entrypoint: bash
@@ -82,14 +92,15 @@ steps:
       - '-c'
       - |
         PROXY_API_URL=$$(cat /workspace/proxy_api_url.txt)
-        echo "Building main app with proxy URL: $$PROXY_API_URL"
+        echo "Using Proxy API URL: $$PROXY_API_URL"
+
         docker build \
           --build-arg VITE_RSVP_API_URL="$$PROXY_API_URL" \
           -t gcr.io/$PROJECT_ID/${_SERVICE_NAME}:$SHORT_SHA \
           -t gcr.io/$PROJECT_ID/${_SERVICE_NAME}:latest \
           .
 
-  # Push the main app image to Container Registry
+  # Push main app
   - name: 'gcr.io/cloud-builders/docker'
     id: 'push-main-app'
     args:
@@ -101,47 +112,29 @@ steps:
       - 'push'
       - 'gcr.io/$PROJECT_ID/${_SERVICE_NAME}:latest'
 
-  # Deploy main app to Cloud Run
+  # ==========================
+  # DEPLOY MAIN APP
+  # ==========================
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     id: 'deploy-main-app'
     entrypoint: gcloud
     args:
-      - 'run'
-      - 'deploy'
-      - '${_SERVICE_NAME}'
-      - '--image'
-      - 'gcr.io/$PROJECT_ID/${_SERVICE_NAME}:$SHORT_SHA'
-      - '--platform'
-      - 'managed'
-      - '--region'
-      - '${_REGION}'
-      - '--allow-unauthenticated'
-      - '--memory'
-      - '512Mi'
-      - '--cpu'
-      - '1'
-      - '--min-instances'
-      - '0'
-      - '--max-instances'
-      - '10'
-      - '--timeout'
-      - '300'
-      - '--port'
-      - '8080'
+      [
+        'run','deploy','${_SERVICE_NAME}',
+        '--image','gcr.io/$PROJECT_ID/${_SERVICE_NAME}:$SHORT_SHA',
+        '--platform','managed',
+        '--region','${_REGION}',
+        '--allow-unauthenticated',
+        '--memory','512Mi',
+        '--cpu','1',
+        '--min-instances','0',
+        '--max-instances','10',
+        '--timeout','300',
+        '--port','8080'
+      ]
 
-# Substitution variables (set these in Cloud Build triggers or via gcloud)
-# _SERVICE_NAME: thanksgiving-app (main React app service name)
-# _PROXY_SERVICE_NAME: rsvp-proxy (CORS proxy service name)
-# _REGION: us-central1
-# _APPS_SCRIPT_URL: https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec (Google Apps Script URL)
-#
-# Note: The proxy service URL is automatically determined after deployment
-# and used to build the main app with the correct VITE_RSVP_API_URL
-
-# Options
 options:
   machineType: 'E2_HIGHCPU_8'
   logging: CLOUD_LOGGING_ONLY
 
 timeout: '1200s'
-
